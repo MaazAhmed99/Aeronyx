@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Wind, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -35,9 +36,7 @@ export default function Header() {
         }`}
       >
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl btn-primary flex items-center justify-center">
-            <Wind className="w-5 h-5 text-white" />
-          </div>
+          <Image src="/logo-icon.svg" alt="Aeronyx" width={36} height={36} className="rounded-xl" />
           <span
             className="text-xl font-black tracking-tight"
             style={{ color: scrolled ? "#fff" : "#0f172a" }}

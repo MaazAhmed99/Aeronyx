@@ -15,6 +15,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Aeronyx - Engineering the Future of Energy",
   description: "UK-based renewable energy company delivering intelligent wind turbine solutions.",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
