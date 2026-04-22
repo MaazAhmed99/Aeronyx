@@ -5,12 +5,13 @@ import {
   Wind, Zap, Settings, BarChart3, Shield, ArrowRight,
   ChevronDown, ChevronLeft, ChevronRight, Play, CheckCircle2,
   Building2, Store, Leaf, Landmark, Home, Smartphone, Activity,
-  Cpu, TrendingUp, Menu, X, Users, Pause,
+  Cpu, TrendingUp, Users, Pause,
 } from "lucide-react";
+import Header from "./components/Header";
 
 /* ─────────────────────────────── HOOKS ─────────────────────────── */
-function useInView(threshold = 0.15) {
-  const ref = useRef(null);
+function useInView(threshold = 0.15): [React.RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
@@ -26,7 +27,7 @@ function useInView(threshold = 0.15) {
 }
 
 /* ─────────────────────────────── COMPONENTS ────────────────────── */
-function Reveal({ children, delay = 0, dir = "up", className = "" }) {
+function Reveal({ children, delay = 0, dir = "up", className = "" }: { children: React.ReactNode; delay?: number; dir?: string; className?: string }) {
   const [ref, inView] = useInView(0.1);
   const hidden = { up:"opacity-0 translate-y-10", left:"opacity-0 -translate-x-10", right:"opacity-0 translate-x-10", scale:"opacity-0 scale-90", fade:"opacity-0" }[dir];
   return (
@@ -36,7 +37,7 @@ function Reveal({ children, delay = 0, dir = "up", className = "" }) {
   );
 }
 
-function Counter({ end, suffix = "", duration = 1800 }) {
+function Counter({ end, suffix = "", duration = 1800 }: { end: number | string; suffix?: string; duration?: number }) {
   const [val, setVal] = useState(0);
   const [ref, inView] = useInView(0.3);
   const started = useRef(false);
@@ -45,7 +46,7 @@ function Counter({ end, suffix = "", duration = 1800 }) {
     started.current = true;
     const num = parseFloat(String(end).replace(/[^0-9.]/g, ""));
     const t0 = performance.now();
-    const tick = (now) => {
+    const tick = (now: number) => {
       const p = Math.min((now - t0) / duration, 1);
       setVal(Math.round((1 - Math.pow(1 - p, 3)) * num * 10) / 10);
       if (p < 1) requestAnimationFrame(tick);
@@ -57,12 +58,12 @@ function Counter({ end, suffix = "", duration = 1800 }) {
 }
 
 /* ── Turbine SVG ── */
-function TurbineSVG({ accent = "#0ea5e9", size = 340 }) {
+function TurbineSVG({ accent = "#0ea5e9", size = 340 }: { accent?: string; size?: number }) {
   const [angle, setAngle] = useState(0);
-  const raf = useRef();
+  const raf = useRef<number>(0);
   useEffect(() => {
     let last = 0;
-    const tick = (t) => {
+    const tick = (t: number) => {
       raf.current = requestAnimationFrame(tick);
       const d = t - last; last = t;
       setAngle(a => (a + d * 0.04) % 360);
@@ -95,12 +96,12 @@ function TurbineSVG({ accent = "#0ea5e9", size = 340 }) {
 }
 
 /* ── Particle canvas ── */
-function Particles({ color = "#0ea5e9" }) {
-  const canvasRef = useRef(null);
-  useEffect(() => {
+function Particles({ color = "#0ea5e9" }: { color?: string }) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     let W = canvas.offsetWidth, H = canvas.offsetHeight;
     canvas.width = W; canvas.height = H;
     const onResize = () => { W = canvas.offsetWidth; H = canvas.offsetHeight; canvas.width = W; canvas.height = H; };
@@ -112,7 +113,7 @@ function Particles({ color = "#0ea5e9" }) {
       dy: (Math.random()-0.5)*0.35,
       o: Math.random()*0.35+0.08,
     }));
-    let raf;
+    let raf: number;
     const draw = () => {
       ctx.clearRect(0,0,W,H);
       particles.forEach(p => {
@@ -196,8 +197,6 @@ const HERO_SLIDES = [
   },
 ];
 
-const NAV_LINKS = ["Home","About","Solutions","Technology","Projects","Partners","Investors","Contact"];
-
 const SERVICES = [
   { icon:Wind,     title:"Wind Turbine Installation",  desc:"Complete setup including design, supply, and installation tailored to your site requirements.", color:"text-sky-500",    bg:"bg-sky-50",    border:"border-sky-100" },
   { icon:Zap,      title:"Grid Integration (G98/G99)", desc:"Full compliance and seamless connection with UK grid systems for reliable energy delivery.",    color:"text-violet-500",bg:"bg-violet-50",border:"border-violet-100" },
@@ -230,46 +229,42 @@ const STATS = [
 /* ─────────────────────────────── MAIN ──────────────────────────── */
 export default function AeronyxHome() {
   const [slide, setSlide] = useState(0);
-  const [prevSlide, setPrevSlide] = useState(null);
+  const [prevSlide, setPrevSlide] = useState<number | null>(null);
   const [dir, setDir] = useState("next"); // "next" | "prev"
   const [animating, setAnimating] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const timerRef = useRef();
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  /* scroll listener */
+  /* auto-advance — simple interval that restarts whenever slide or paused changes */
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", h, { passive:true });
-    return () => window.removeEventListener("scroll", h);
-  }, []);
+    if (paused) return;
+    const id = setInterval(() => {
+      setAnimating(true);
+      setDir("next");
+      setPrevSlide(slide);
+      setSlide(s => (s + 1) % HERO_SLIDES.length);
+      setTimeout(() => { setPrevSlide(null); setAnimating(false); }, 650);
+    }, 5000);
+    timerRef.current = id;
+    return () => clearInterval(id);
+  }, [slide, paused]);
 
-  /* auto-advance */
   const advance = useCallback((d = "next") => {
     if (animating) return;
     setAnimating(true);
     setDir(d);
     setPrevSlide(slide);
-    setSlide(s => d === "next" ? (s+1)%HERO_SLIDES.length : (s-1+HERO_SLIDES.length)%HERO_SLIDES.length);
+    setSlide(s => d === "next" ? (s + 1) % HERO_SLIDES.length : (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
     setTimeout(() => { setPrevSlide(null); setAnimating(false); }, 650);
-  }, [animating, slide]);
+  }, [slide, animating]);
 
-  useEffect(() => {
-    if (paused) { clearInterval(timerRef.current); return; }
-    timerRef.current = setInterval(() => advance("next"), 5500);
-    return () => clearInterval(timerRef.current);
-  }, [paused, advance]);
-
-  const goTo = (i) => {
+  const goTo = (i: number) => {
     if (i === slide || animating) return;
     setAnimating(true);
     setDir(i > slide ? "next" : "prev");
     setPrevSlide(slide);
     setSlide(i);
     setTimeout(() => { setPrevSlide(null); setAnimating(false); }, 650);
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => advance("next"), 5500);
   };
 
   const sl = HERO_SLIDES[slide];
@@ -336,7 +331,7 @@ export default function AeronyxHome() {
 
         /* progress bar */
         @keyframes progressFill { from{width:0%} to{width:100%} }
-        .progress-fill { animation:progressFill 5.5s linear both; }
+        .progress-fill { animation:progressFill 5s linear both; }
 
         /* glow ring pulse */
         @keyframes ringPulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:0.9;transform:scale(1.04)} }
@@ -361,40 +356,7 @@ export default function AeronyxHome() {
         .slide-dot { transition:all 0.4s cubic-bezier(.22,1,.36,1); }
       `}</style>
 
-      {/* ══ NAVBAR ══ */}
-      <header className={`fixed top-0 left-0 right-0 z-50 h-[68px] flex items-center justify-between px-6 md:px-12 transition-all duration-500 ${scrolled ? "glass-dark shadow-xl" : "bg-transparent"}`}>
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl btn-primary flex items-center justify-center">
-            <Wind className="w-5 h-5 text-white"/>
-          </div>
-          <span className="text-xl font-black tracking-tight" style={{ color: scrolled ? "#fff" : "#0f172a" }}>
-            Aero<span className="gradient-text">nyx</span>
-          </span>
-        </div>
-
-        <nav className="hidden lg:flex items-center gap-1 nav-pill rounded-full px-2 py-1.5">
-          {NAV_LINKS.map((item,i) => (
-            <a key={item} href="#" className={`px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 hover:bg-sky-50 hover:text-sky-600 ${i===0?"bg-sky-500 text-white shadow-sm":"text-slate-600"}`}>{item}</a>
-          ))}
-        </nav>
-
-        <div className="hidden lg:flex items-center gap-3">
-          <button className="btn-primary text-white text-sm font-bold px-5 py-2.5 rounded-full">Get a Quote</button>
-        </div>
-
-        <button className="lg:hidden p-2" onClick={() => setMenuOpen(!menuOpen)} style={{ color: scrolled ? "#fff" : "#0f172a" }}>
-          {menuOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
-        </button>
-      </header>
-
-      {menuOpen && (
-        <div className="fixed inset-0 z-40 glass-dark flex flex-col pt-20 px-8 lg:hidden" onClick={() => setMenuOpen(false)}>
-          {NAV_LINKS.map(item => (
-            <a key={item} href="#" className="text-white text-xl font-semibold py-4 border-b border-white/10">{item}</a>
-          ))}
-          <button className="btn-primary text-white font-bold px-6 py-3 rounded-2xl mt-6">Get a Quote</button>
-        </div>
-      )}
+      <Header />
 
       {/* ══════════════════════════════════════════
           HERO — ANIMATED SLIDER
@@ -402,8 +364,6 @@ export default function AeronyxHome() {
       <section
         className="hero-bg relative min-h-screen flex items-center overflow-hidden"
         style={{ background: sl.bg }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
       >
         {/* Particle network */}
         <Particles color={sl.accent}/>
@@ -843,11 +803,11 @@ export default function AeronyxHome() {
                 ))}
               </div>
             </div>
-            {[
+            {([
               ["Solutions",["Wind Installation","Grid Integration","Smart Load Mgmt","Maintenance & Support"]],
               ["Company",  ["About Us","Technology","Projects","Investors"]],
               ["Contact",  ["info@aeronyx.com","+44 (0) 20 0000 0000","London, UK","Partner Enquiries"]],
-            ].map(([title,items]) => (
+            ] as [string, string[]][]).map(([title, items]) => (
               <div key={title}>
                 <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">{title}</p>
                 <ul className="space-y-2.5">
