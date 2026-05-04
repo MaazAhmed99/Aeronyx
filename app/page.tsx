@@ -107,43 +107,50 @@ function Particles({ color = "#0ea5e9" }: { color?: string }) {
     const onResize = () => { W = canvas.offsetWidth; H = canvas.offsetHeight; canvas.width = W; canvas.height = H; };
     window.addEventListener("resize", onResize);
     const particles = Array.from({ length: 38 }, () => ({
-      x: Math.random()*W, y: Math.random()*H,
-      r: Math.random()*2.5+0.8,
-      dx: (Math.random()-0.5)*0.35,
-      dy: (Math.random()-0.5)*0.35,
-      o: Math.random()*0.35+0.08,
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 2.5 + 0.8,
+      dx: (Math.random() - 0.5) * 0.35,
+      dy: (Math.random() - 0.5) * 0.35,
+      o: Math.random() * 0.35 + 0.08,
     }));
-    let raf: number;
-    const draw = () => {
-      ctx.clearRect(0,0,W,H);
-      particles.forEach(p => {
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fillStyle = color + Math.round(p.o*255).toString(16).padStart(2,"0");
-        ctx.fill();
-      });
-      // draw lines between close particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i+1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx*dx+dy*dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = color + Math.round((1-dist/100)*0.1*255).toString(16).padStart(2,"0");
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(draw);
+    let raf: number; 
+    const draw = () => { 
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { 
+        p.x += p.dx; 
+        p.y += p.dy; 
+        if (p.x < 0) p.x = W; 
+        if (p.x > W) p.x = 0; 
+        if (p.y < 0) p.y = H; 
+        if (p.y > H) p.y = 0; 
+        ctx.beginPath(); 
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = color + Math.round(p.o * 255).toString(16).padStart(2, "0");
+        ctx.fill(); 
+      }); 
+      // draw lines between close particles 
+      for (let i = 0; i < particles.length; i++) { 
+        for (let j = i + 1; j < particles.length; j++) { 
+          const dx = particles[i].x - particles[j].x, 
+              dy = particles[i].y - particles[j].y; 
+          const dist = Math.sqrt(dx * dx + dy * dy); 
+          if (dist < 100) { 
+            ctx.beginPath(); 
+            ctx.moveTo(particles[i].x, particles[i].y); 
+            ctx.lineTo(particles[j].x, particles[j].y); 
+            ctx.strokeStyle = color + Math.round((1 - dist / 100) * 0.1 * 255).toString(16).padStart(2, "0");
+            ctx.lineWidth = 0.6; 
+            ctx.stroke(); 
+          } 
+        } 
+      } 
+      raf = requestAnimationFrame(draw); 
+    }; 
+    draw(); 
+    return () => { 
+      cancelAnimationFrame(raf); 
+      window.removeEventListener("resize", onResize); 
     };
-    draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); };
   }, [color]);
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity:0.7 }}/>;
 }
@@ -198,9 +205,9 @@ const HERO_SLIDES = [
 ];
 
 const SERVICES = [
-  { icon:Wind,     title:"Wind Turbine Installation",  desc:"Complete setup including design, supply, and installation tailored to your site requirements.", color:"text-sky-500",    bg:"bg-sky-50",    border:"border-sky-100" },
+  { icon:Wind,     title:"Wind Turbine Installation",  desc:"Complete setup including design, supply and installation.", color:"text-sky-500",    bg:"bg-sky-50",    border:"border-sky-100" },
   { icon:Zap,      title:"Grid Integration (G98/G99)", desc:"Full compliance and seamless connection with UK grid systems for reliable energy delivery.",    color:"text-violet-500",bg:"bg-violet-50",border:"border-violet-100" },
-  { icon:Cpu,      title:"Smart Load Management",      desc:"Control energy distribution intelligently via app and automation for maximum efficiency.",     color:"text-emerald-500",bg:"bg-emerald-50",border:"border-emerald-100" },
+  { icon:Cpu,      title:"Smart Load Management",      desc:"Control energy distribution intelligently via app and automation for maximum efficiency. AI-based smart load management system is installed.",     color:"text-emerald-500",bg:"bg-emerald-50",border:"border-emerald-100" },
   { icon:Activity, title:"Monitoring & Maintenance",   desc:"Ongoing system monitoring, diagnostics, and servicing to keep your installation performing.",   color:"text-amber-500",  bg:"bg-amber-50",  border:"border-amber-100" },
 ];
 
@@ -216,7 +223,7 @@ const HOW_IT_WORKS = [
   { step:"01", icon:Wind,       title:"Wind Generates",  desc:"Turbine captures kinetic energy and converts it into clean electricity." },
   { step:"02", icon:Zap,        title:"Grid Backs Up",   desc:"Grid electricity provides seamless backup ensuring zero downtime." },
   { step:"03", icon:Cpu,        title:"System Balances", desc:"AI-driven controller optimises the load split in real time." },
-  { step:"04", icon:Smartphone, title:"You Control",     desc:"Monitor and manage your entire energy ecosystem from your phone." },
+  { step:"04", icon:Smartphone, title:"You Control",     desc:"Monitor and manage your entire energy ecosystem smartly." },
 ];
 
 const STATS = [
@@ -591,7 +598,8 @@ export default function AeronyxHome() {
               </Reveal>
               <Reveal dir="left" delay={150}>
                 <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-[500px]">
-                  Aeronyx combines wind generation with grid electricity and AI-driven load control, enabling real-time energy optimisation without full reliance on batteries.
+                  Aeronyx combines wind generation with grid electricity and AI-driven load control
+                 .
                 </p>
               </Reveal>
               <Reveal dir="left" delay={220}>
@@ -612,7 +620,7 @@ export default function AeronyxHome() {
                 { icon:Wind,       label:"Wind + Grid Hybrid", val:"Hybrid",    color:"text-sky-400",    bg:"bg-sky-500/10",    border:"border-sky-500/20" },
                 { icon:Cpu,        label:"AI Optimisation",    val:"Smart",     color:"text-violet-400", bg:"bg-violet-500/10", border:"border-violet-500/20" },
                 { icon:BarChart3,  label:"Live Dashboard",     val:"Real-time", color:"text-emerald-400",bg:"bg-emerald-500/10",border:"border-emerald-500/20" },
-                { icon:Smartphone, label:"App Control",        val:"Mobile",    color:"text-amber-400",  bg:"bg-amber-500/10",  border:"border-amber-500/20" },
+                { icon:Smartphone, label:"App Control",        val:"Controlling",    color:"text-amber-400",  bg:"bg-amber-500/10",  border:"border-amber-500/20" },
               ].map((card,i) => (
                 <Reveal key={i} dir="scale" delay={i*90}>
                   <div className={`glass-dark rounded-2xl p-5 border ${card.border} cursor-pointer step-card h-full`}>
@@ -806,7 +814,7 @@ export default function AeronyxHome() {
             {([
               ["Solutions",["Wind Installation","Grid Integration","Smart Load Mgmt","Maintenance & Support"]],
               ["Company",  ["About Us","Technology","Projects","Investors"]],
-              ["Contact",  ["info@aeronyx.com","+44 (0) 20 0000 0000","London, UK","Partner Enquiries"]],
+              ["Contact",  ["info@aeronyx.com","+447737901559","London, UK","Partner Enquiries"]],
             ] as [string, string[]][]).map(([title, items]) => (
               <div key={title}>
                 <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">{title}</p>

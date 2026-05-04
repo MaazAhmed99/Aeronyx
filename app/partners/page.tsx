@@ -41,7 +41,7 @@ const PARTNER_TYPES = [
   {
     icon: Cpu,
     title: "Technology Partners",
-    desc: "Software and hardware collaborators power our AI-driven monitoring, load management, and smart-grid integration platform.",
+    desc: "Software and hardware collaborators power our AI-driven monitoring and smart-grid integration platform.",
     color: "text-emerald-500",
     bg: "bg-emerald-50",
     border: "border-emerald-200",

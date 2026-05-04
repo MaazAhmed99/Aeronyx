@@ -17,7 +17,6 @@ const FEATURES = [
   { icon: Wind, title: "Hybrid Energy System", desc: "Seamless combination of wind power and grid electricity for uninterrupted supply.", color: "text-sky-500", bg: "bg-sky-50" },
   { icon: Cpu, title: "AI-Based Load Optimization", desc: "Machine-learning algorithms that predict demand and balance loads in real time.", color: "text-violet-500", bg: "bg-violet-50" },
   { icon: BarChart3, title: "Real-Time Monitoring Dashboard", desc: "Live analytics on energy generation, consumption, and savings at your fingertips.", color: "text-emerald-500", bg: "bg-emerald-50" },
-  { icon: Smartphone, title: "App-Based Appliance Control", desc: "Control individual appliances remotely, set schedules, and automate energy usage.", color: "text-amber-500", bg: "bg-amber-50" },
   { icon: TrendingUp, title: "Scalable Infrastructure", desc: "Modular architecture that grows with your energy needs — from a single turbine to a full farm.", color: "text-rose-500", bg: "bg-rose-50" },
 ];
 
@@ -158,7 +157,7 @@ export default function Technology() {
               {[
                 { step: "01", title: "Generate", desc: "Wind turbines produce clean energy on-site, supplemented by grid power when needed.", icon: Wind },
                 { step: "02", title: "Distribute", desc: "AI algorithms route energy to where it's needed most, minimizing waste and cost.", icon: Zap },
-                { step: "03", title: "Control", desc: "Monitor and manage everything in real time via our dashboard and mobile app.", icon: Smartphone },
+                { step: "03", title: "Control", desc: "Monitor everything in real time via our dashboard.", icon: Smartphone },
               ].map((s) => (
                 <div key={s.step} className="text-center">
                   <div className="w-14 h-14 btn-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
