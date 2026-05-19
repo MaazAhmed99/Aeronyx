@@ -147,13 +147,13 @@ export default function Partners() {
                 <div className="w-[85%] h-[85%] rounded-2xl border-2 border-indigo-300/20" style={{ animation: "pulse-ring 3s ease-out infinite" }} />
               </div>
               <div className="hero-image-card glass-card rounded-2xl p-3 shadow-2xl relative hero-shimmer overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&auto=format&fit=crop&q=60"
-                  alt="Business partnership handshake"
-                  width={600}
-                  height={450}
-                  className="rounded-xl w-full h-auto relative z-0"
-                />
+                  <Image
+                    src="/shaking-hand.jpeg"
+                    alt="Two people shaking hands in a business meeting"
+                    width={600}
+                    height={450}
+                    className="rounded-xl w-full h-auto relative z-0"
+                  />
               </div>
               <div className="hero-badge absolute -bottom-4 -left-4 md:-left-8 glass-card rounded-2xl px-5 py-3 shadow-lg flex items-center gap-3">
                 <div className="w-10 h-10 btn-primary rounded-xl flex items-center justify-center">

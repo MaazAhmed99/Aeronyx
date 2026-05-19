@@ -207,7 +207,7 @@ const HERO_SLIDES = [
 const SERVICES = [
   { icon:Wind,     title:"Wind Turbine Installation",  desc:"Complete setup including design, supply and installation.", color:"text-sky-500",    bg:"bg-sky-50",    border:"border-sky-100" },
   { icon:Zap,      title:"Grid Integration (G98/G99)", desc:"Full compliance and seamless connection with UK grid systems for reliable energy delivery.",    color:"text-violet-500",bg:"bg-violet-50",border:"border-violet-100" },
-  { icon:Cpu,      title:"Smart Load Management",      desc:"Control energy distribution intelligently via app and automation for maximum efficiency. AI-based smart load management system is installed.",     color:"text-emerald-500",bg:"bg-emerald-50",border:"border-emerald-100" },
+  { icon:Cpu,      title:"Smart Load Management",      desc:"Control energy distribution intelligently",     color:"text-emerald-500",bg:"bg-emerald-50",border:"border-emerald-100" },
   { icon:Activity, title:"Monitoring & Maintenance",   desc:"Ongoing system monitoring, diagnostics, and servicing to keep your installation performing.",   color:"text-amber-500",  bg:"bg-amber-50",  border:"border-amber-100" },
 ];
 
@@ -223,7 +223,7 @@ const HOW_IT_WORKS = [
   { step:"01", icon:Wind,       title:"Wind Generates",  desc:"Turbine captures kinetic energy and converts it into clean electricity." },
   { step:"02", icon:Zap,        title:"Grid Backs Up",   desc:"Grid electricity provides seamless backup ensuring zero downtime." },
   { step:"03", icon:Cpu,        title:"System Balances", desc:"AI-driven controller optimises the load split in real time." },
-  { step:"04", icon:Smartphone, title:"You Control",     desc:"Monitor and manage your entire energy ecosystem smartly." },
+  { step:"04", icon:Smartphone, title:"Controlling",     desc:"Monitor and manage your entire energy ecosystem smartly." },
 ];
 
 const STATS = [
@@ -423,7 +423,7 @@ export default function AeronyxHome() {
               </div>
 
               <div className="flex flex-wrap items-center gap-5 mb-10">
-                {["G98/G99 Compliant","AI-Optimised","App Controlled"].map(t => (
+                {["G98/G99 Compliant","AI-Optimised","Smart controlling"].map(t => (
                   <div key={t} className="flex items-center gap-1.5 text-sm text-slate-500">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500"/> {t}
                   </div>
@@ -604,7 +604,7 @@ export default function AeronyxHome() {
               </Reveal>
               <Reveal dir="left" delay={220}>
                 <div className="space-y-3">
-                  {["Hybrid energy system (Wind + Grid)","AI-based load optimisation","Real-time monitoring dashboard","App-based appliance control","Scalable infrastructure"].map((item,i) => (
+                  {["Hybrid energy system (Wind + Grid)","AI-based load optimisation","Real-time monitoring dashboard","Scalable infrastructure"].map((item,i) => (
                     <div key={i} className="flex items-center gap-3">
                       <div className="w-5 h-5 rounded-full bg-sky-500/20 border border-sky-500/40 flex items-center justify-center flex-shrink-0">
                         <CheckCircle2 className="w-3 h-3 text-sky-400"/>
@@ -620,7 +620,7 @@ export default function AeronyxHome() {
                 { icon:Wind,       label:"Wind + Grid Hybrid", val:"Hybrid",    color:"text-sky-400",    bg:"bg-sky-500/10",    border:"border-sky-500/20" },
                 { icon:Cpu,        label:"AI Optimisation",    val:"Smart",     color:"text-violet-400", bg:"bg-violet-500/10", border:"border-violet-500/20" },
                 { icon:BarChart3,  label:"Live Dashboard",     val:"Real-time", color:"text-emerald-400",bg:"bg-emerald-500/10",border:"border-emerald-500/20" },
-                { icon:Smartphone, label:"App Control",        val:"Controlling",    color:"text-amber-400",  bg:"bg-amber-500/10",  border:"border-amber-500/20" },
+                { icon:Smartphone, label:"smart controlling",        val:"Controlling",    color:"text-amber-400",  bg:"bg-amber-500/10",  border:"border-amber-500/20" },
               ].map((card,i) => (
                 <Reveal key={i} dir="scale" delay={i*90}>
                   <div className={`glass-dark rounded-2xl p-5 border ${card.border} cursor-pointer step-card h-full`}>
@@ -814,7 +814,7 @@ export default function AeronyxHome() {
             {([
               ["Solutions",["Wind Installation","Grid Integration","Smart Load Mgmt","Maintenance & Support"]],
               ["Company",  ["About Us","Technology","Projects","Investors"]],
-              ["Contact",  ["info@aeronyx.com","+447737901559","London, UK","Partner Enquiries"]],
+              ["Contact",  ["info@aeronyx.uk","(+44) 7737901559","London, UK","Partner Enquiries"]],
             ] as [string, string[]][]).map(([title, items]) => (
               <div key={title}>
                 <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">{title}</p>

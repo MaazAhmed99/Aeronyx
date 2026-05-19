@@ -51,7 +51,7 @@ export default function Contact() {
     const message = (fd.get("message") as string) || "";
     const subject = encodeURIComponent(`Website message from ${name || email}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\nMessage:\n${message}`);
-    const mailto = `mailto:info@aeronyx.com?subject=${subject}&body=${body}`;
+    const mailto = `mailto:info@aeronyx.uk?subject=${subject}&body=${body}`;
     // Open user's mail client to forward the message to the site email
     window.location.href = mailto;
     setSubmitted(true);
@@ -146,14 +146,14 @@ export default function Contact() {
                 <Mail className="w-6 h-6 text-sky-500" />
               </div>
               <h3 className="font-bold mb-1">Email</h3>
-              <p className="text-slate-600 text-sm">info@aeronyx.com</p>
+              <p className="text-slate-600 text-sm">info@aeronyx.uk</p>
             </div>
               <div className="info-card glass-card rounded-2xl p-6 text-center">
               <div className="w-12 h-12 bg-violet-50 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Phone className="w-6 h-6 text-violet-500" />
               </div>
               <h3 className="font-bold mb-1">Phone</h3>
-              <p className="text-slate-600 text-sm">+447737901559</p>
+              <p className="text-slate-600 text-sm">(+44) 7737901559</p>
             </div>
             <div className="info-card glass-card rounded-2xl p-6 text-center">
               <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mx-auto mb-4">

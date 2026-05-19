@@ -32,7 +32,7 @@ const SERVICES = [
   {
     icon: Cpu,
     title: "Smart Load Management",
-    desc: "Control energy distribution intelligently via app and automation for maximum efficiency. AI-based smart load management system is installed.",
+    desc: "AI base smart load management system is installed",
     color: "text-emerald-500",
     bg: "bg-emerald-50",
     border: "border-emerald-200",
